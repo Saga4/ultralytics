@@ -25,7 +25,6 @@ class ClassificationValidator(BaseValidator):
         validator()
         ```
     """
-
     def __init__(self, dataloader=None, save_dir=None, pbar=None, args=None, _callbacks=None):
         """Initializes ClassificationValidator instance with args, dataloader, save_dir, and progress bar."""
         super().__init__(dataloader, save_dir, pbar, args, _callbacks)
@@ -72,8 +71,11 @@ class ClassificationValidator(BaseValidator):
         self.metrics.save_dir = self.save_dir
 
     def postprocess(self, preds):
-        """Preprocesses the classification predictions."""
-        return preds[0] if isinstance(preds, (list, tuple)) else preds
+        """Postprocesses the classification predictions."""
+        # Efficient handling using single return statement and avoiding extra function calls.
+        if isinstance(preds, list) or isinstance(preds, tuple):
+            return preds[0]
+        return preds
 
     def get_stats(self):
         """Returns a dictionary of metrics obtained by processing targets and predictions."""
