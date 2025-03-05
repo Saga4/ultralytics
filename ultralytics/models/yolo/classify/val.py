@@ -34,9 +34,12 @@ class ClassificationValidator(BaseValidator):
         self.args.task = "classify"
         self.metrics = ClassifyMetrics()
 
+        # Cache the description to avoid recomputation
+        self._desc = ("%22s" + "%11s" * 2) % ("classes", "top1_acc", "top5_acc")
+
     def get_desc(self):
-        """Returns a formatted string summarizing classification metrics."""
-        return ("%22s" + "%11s" * 2) % ("classes", "top1_acc", "top5_acc")
+        """Returns a pre-computed formatted string summarizing classification metrics."""
+        return self._desc
 
     def init_metrics(self, model):
         """Initialize confusion matrix, class names, and top-1 and top-5 accuracy."""
